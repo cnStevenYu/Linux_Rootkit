@@ -1,6 +1,11 @@
-obj-m += HideFile.o
-all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+ifneq ($(KERNELRELEASE),)
+	obj-m := rootkit.o
+	rootkit-y := HookEngine.o HideFile.o
 
+else
+	KDIR ?=/lib/modules/`uname -r`/build
+default:
+	$(MAKE) -C $(KDIR) M=$$PWD
 clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+	$(MAKE) -C $(KDIR) M=$$PWD clean
+endif
